@@ -16,5 +16,11 @@
             "type": "dart",
             "program": "lib/side_effects.main.dart",
         },
+        {
+            "name": "Countdown",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/countdown.main.dart",
+        },
     ]
 }

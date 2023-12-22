@@ -18,11 +18,11 @@ extension ResourceSideEffects on SideEffectRegistrar {
             Timer.periodic(const Duration(seconds: 1), (timer) {
               setState(state - 1);
 
-              // if (state == 0) {
-              //   timer.cancel();
-              // }
+              if (state == 0) {
+                timer.cancel();
+              }
 
-              // api.rebuild();
+              api.rebuild();
             });
 
         final (timer, setTimer) =
@@ -33,25 +33,25 @@ extension ResourceSideEffects on SideEffectRegistrar {
         return (
           value: '$state seconds',
           isActive: isActive(),
-          // pause: () {
-          //   if (!isActive()) {
-          //     return false;
-          //   }
+          pause: () {
+            if (!isActive()) {
+              return false;
+            }
 
-          //   timer!.cancel();
+            timer!.cancel();
 
-          //   return true;
-          // },
-          // resume: () {
-          //   if (isActive()) {
-          //     return false;
-          //   }
+            return true;
+          },
+          resume: () {
+            if (isActive()) {
+              return false;
+            }
 
-          //   setTimer(startTimer());
+            setTimer(startTimer());
 
-          //   return true;
-          // },
-          // reset: () => setState(initialSecondsCount),
+            return true;
+          },
+          reset: () => setState(initialSecondsCount),
         );
       });
 }
@@ -59,7 +59,7 @@ extension ResourceSideEffects on SideEffectRegistrar {
 typedef CountdownSideEffectController = ({
   String value,
   bool isActive,
-  // bool Function() pause,
-  // bool Function() resume,
-  // void Function() reset,
+  bool Function() pause,
+  bool Function() resume,
+  void Function() reset,
 });
