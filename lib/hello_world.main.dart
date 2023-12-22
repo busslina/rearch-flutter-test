@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rearch/flutter_rearch.dart';
 
-import 'counter.capsule.dart';
+import 'hello_world/counter.capsule.dart';
 
 void main() {
   runApp(const RearchBootstrapper(child: MainApp()));
