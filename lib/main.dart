@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rearch/flutter_rearch.dart';
+
+import 'counter.capsule.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(const RearchBootstrapper(child: MainApp()));
 }
 
 class MainApp extends StatelessWidget {
@@ -9,12 +12,43 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+        body: Container(
+          color: const Color.fromARGB(255, 186, 178, 178),
+          child: const Center(
+            child: CounterWidget(),
+          ),
         ),
       ),
     );
   }
+}
+
+class CounterWidget extends RearchConsumer {
+  const CounterWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetHandle use) => Container(
+        width: 400,
+        height: 300,
+        color: Colors.blue,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Button
+            ElevatedButton.icon(
+              onPressed: () => use(counterCapsule).incrementCounter(),
+              icon: const Icon(Icons.add),
+              label: const Text('Add'),
+            ),
+
+            // Counter text
+            Text('Counter: ${use(counterCapsule).counter}'),
+          ],
+        ),
+      );
 }
