@@ -10,50 +10,68 @@ extension ResourceSideEffects on SideEffectRegistrar {
   CountdownSideEffectController asCountdown(
     int initialSecondsCount, {
     bool autoStart = false,
-  }) =>
-      use.register((api) {
-        final (state, setState) = use.state(initialSecondsCount);
+  }) {
+    final (getState, setState) = use.stateGetterSetter(initialSecondsCount);
 
-        Timer startTimer() =>
-            Timer.periodic(const Duration(seconds: 1), (timer) {
-              setState(state - 1);
+    final (getTimer, setTimer) = use.stateGetterSetter<Timer?>(null);
 
-              if (state == 0) {
-                timer.cancel();
-              }
+    final rebuilder = use.rebuilder();
+    final rebuild = () {
+      print('REBUILDING');
+      rebuilder();
+    };
 
-              api.rebuild();
-            });
+    Timer startTimer() {
+      // print('startTimer()');
 
-        final (timer, setTimer) =
-            use.state<Timer?>(autoStart ? startTimer() : null);
+      return Timer.periodic(const Duration(seconds: 1), (timer) {
+        // print('TIMER -- ${getState()}');
 
-        bool isActive() => timer?.isActive ?? false;
+        setState(getState() - 1);
 
-        return (
-          value: '$state seconds',
-          isActive: isActive(),
-          pause: () {
-            if (!isActive()) {
-              return false;
-            }
+        if (getState() == 0) {
+          timer.cancel();
+        }
 
-            timer!.cancel();
-
-            return true;
-          },
-          resume: () {
-            if (isActive()) {
-              return false;
-            }
-
-            setTimer(startTimer());
-
-            return true;
-          },
-          reset: () => setState(initialSecondsCount),
-        );
+        rebuild();
       });
+    }
+
+    if (autoStart) {
+      setTimer(startTimer());
+    }
+
+    bool isActive() => getTimer()?.isActive ?? false;
+
+    return (
+      value: '${getState()} seconds',
+      isActive: isActive(),
+      pause: () {
+        if (!isActive()) {
+          return false;
+        }
+
+        getTimer()!.cancel();
+
+        rebuild();
+
+        return true;
+      },
+      resume: () {
+        if (isActive()) {
+          return false;
+        }
+
+        // setTimer(startTimer());
+        startTimer();
+
+        return true;
+      },
+      reset: () => setState(initialSecondsCount),
+      debug: () =>
+          print('Countdown -- Value: ${getState()}, active: ${isActive()}'),
+    );
+  }
 }
 
 typedef CountdownSideEffectController = ({
@@ -62,4 +80,5 @@ typedef CountdownSideEffectController = ({
   bool Function() pause,
   bool Function() resume,
   void Function() reset,
+  void Function() debug,
 });

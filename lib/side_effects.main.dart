@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rearch/rearch.dart';
 import 'package:flutter_rearch/flutter_rearch.dart';
 
 import 'side_effects/capsules.dart';
@@ -35,6 +36,8 @@ class CounterWidget extends RearchConsumer {
   Widget build(BuildContext context, WidgetHandle use) {
     final countdown = use(countdownCapsule);
 
+    countdown.debug();
+
     return Container(
       width: 400,
       height: 300,
@@ -44,9 +47,9 @@ class CounterWidget extends RearchConsumer {
         children: [
           // Start / stop button
           ElevatedButton.icon(
-            onPressed: () {},
-            // onPressed: () =>
-            //     countdown.isActive ? countdown.pause() : countdown.resume(),
+            // onPressed: () {},
+            onPressed: () =>
+                countdown.isActive ? countdown.pause() : countdown.resume(),
             icon: countdown.isActive
                 ? const Icon(Icons.pause)
                 : const Icon(Icons.play_arrow),
