@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rearch/rearch.dart';
 import 'package:flutter_rearch/flutter_rearch.dart';
 
 import 'side_effects/capsules.dart';
