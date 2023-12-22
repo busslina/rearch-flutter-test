@@ -5,21 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "rearch_flutter_test",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "rearch_flutter_test (profile mode)",
+            "name": "Hello World",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "program": "lib/hello_world.main.dart",
         },
         {
-            "name": "rearch_flutter_test (release mode)",
+            "name": "Side Effects",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
-        }
+            "program": "lib/side_effects.main.dart",
+        },
     ]
 }
